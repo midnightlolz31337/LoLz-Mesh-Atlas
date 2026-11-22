@@ -1,0 +1,3 @@
+# Security policy
+
+Do not open public issues for exploitable vulnerabilities or disclose credentials. Until a private reporting channel is configured, do not submit sensitive exploit details. Report only a minimal non-sensitive description through the repository owner's established GitHub security contact. Include affected commit/version, impact, and a safe reproduction outline. Bootstrap-stage; no security certification is claimed.
