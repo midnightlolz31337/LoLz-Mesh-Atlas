@@ -1,0 +1,29 @@
+schema_version: "1.0"
+updated: "2026-11-22"
+projects:
+  - id: lolz-mesh-atlas
+    name: LoLz Mesh Atlas
+    repository: https://github.com/midnightlolz31337/LoLz-Mesh-Atlas
+    status: bootstrap
+    role: public-discovery-index
+    notes: "Catalogue bootstrap; no federation service is claimed."
+  - id: elite-protocol
+    name: ELITE Protocol
+    repository: https://github.com/midnightlolz31337/ELITE-Protocol
+    status: existing-project
+    role: evidence-and-provenance-contracts
+  - id: elite-ingestion-core
+    name: ELITE Ingestion Core
+    repository: https://github.com/midnightlolz31337/ELITE-Ingestion-Core
+    status: existing-project
+    role: bounded-ingestion-and-quarantine
+  - id: elite-agent-commons
+    name: ELITE Agent Commons
+    repository: https://github.com/midnightlolz31337/ELITE-Agent-Commons
+    status: existing-project
+    role: agent-and-tool-discovery
+  - id: huffman-network-atlas
+    name: Huffman Network Atlas
+    repository: https://github.com/midnightlolz31337/Huffman-Network-Atlas
+    status: existing-project
+    role: cross-account-ecosystem-discovery
