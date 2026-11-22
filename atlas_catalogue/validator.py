@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -61,7 +63,7 @@ def build_format_checker() -> FormatChecker:
 
     @checker.checks("uri")
     def is_absolute_https_uri(value: Any) -> bool:
-        if not isinstance(value, str) or not value or any(ch.isspace() for ch in value):
+        if not isinstance(value, str) or not value or any(ch.isspace() or ch == "\\" for ch in value):
             return False
         try:
             parsed = urlsplit(value)
@@ -109,26 +111,64 @@ def validate_catalogue(document: Any, schema: dict[str, Any] | None = None) -> l
     return sorted(errors)
 
 
+def export_catalogue_json(document: dict[str, Any], destination: Path) -> None:
+    """Write deterministic JSON through a same-directory atomic replacement."""
+    destination = destination.resolve()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(document, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="\n",
+            dir=destination.parent,
+            prefix=f".{destination.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temporary_path = Path(handle.name)
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary_path, destination)
+        temporary_path = None
+    finally:
+        if temporary_path is not None:
+            try:
+                temporary_path.unlink()
+            except FileNotFoundError:
+                pass
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate the LoLz Mesh Atlas catalogue.")
     parser.add_argument("catalogue", nargs="?", type=Path, default=DEFAULT_CATALOGUE)
     parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    parser.add_argument("--export-json", type=Path, help="Write a deterministic JSON export after validation")
     args = parser.parse_args(argv)
 
     try:
+        if args.export_json is not None:
+            output = args.export_json.resolve()
+            if output in {args.catalogue.resolve(), args.schema.resolve()}:
+                raise ValueError("JSON export destination must differ from the catalogue and schema inputs")
         schema = load_schema(args.schema)
         catalogue = load_catalogue(args.catalogue)
         errors = validate_catalogue(catalogue, schema)
-    except (OSError, json.JSONDecodeError, yaml.YAMLError, SchemaError) as exc:
+        if errors:
+            for error in errors:
+                print(f"FAIL: {error}")
+            return 1
+        if args.export_json is not None:
+            export_catalogue_json(catalogue, args.export_json)
+    except (OSError, ValueError, json.JSONDecodeError, yaml.YAMLError, SchemaError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 
-    if errors:
-        for error in errors:
-            print(f"FAIL: {error}")
-        return 1
-
     print(f"PASS: {len(catalogue['projects'])} public project records validated")
+    if args.export_json is not None:
+        print(f"EXPORTED: {args.export_json}")
     return 0
 
 
