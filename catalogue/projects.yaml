@@ -5,25 +5,97 @@ projects:
     name: LoLz Mesh Atlas
     repository: https://github.com/midnightlolz31337/LoLz-Mesh-Atlas
     status: bootstrap
-    role: public-discovery-index
-    notes: "Catalogue bootstrap; no federation service is claimed."
+    role: public-product-discovery-index
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Catalogue and validation implementation are under active development; this record does not claim federation service availability."
+  - id: lolz-mesh-conformance
+    name: LoLz Mesh Conformance
+    repository: https://github.com/midnightlolz31337/LoLz-Mesh-Conformance
+    status: bootstrap
+    role: protocol-and-federation-conformance-suite
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Draft PR #1 implements a manifest-validation profile; no federation implementation is certified."
+  - id: no-gatekeepers-index
+    name: NoGatekeepers Index
+    repository: https://github.com/midnightlolz31337/NoGatekeepers-Index
+    status: bootstrap
+    role: evidence-backed-platform-portability-index
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+  - id: elite-field-kit
+    name: ELITE Field Kit
+    repository: https://github.com/midnightlolz31337/ELITE-Field-Kit
+    status: bootstrap
+    role: local-first-osint-field-toolkit
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Repository bootstrap only; previously reviewed local package artifact is not represented as a published release."
+  - id: lolz-reverse-engineering-commons
+    name: LoLz Reverse Engineering Commons
+    repository: https://github.com/midnightlolz31337/LoLz-Reverse-Engineering-Commons
+    status: bootstrap
+    role: reproducible-technical-dossiers
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+  - id: elite-workstation
+    name: ELITE Workstation
+    repository: https://github.com/midnightlolz31337/ELITE-Workstation
+    status: bootstrap
+    role: local-first-integration-workstation
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Architecture scaffold; not yet an integrated workstation."
   - id: elite-protocol
     name: ELITE Protocol
     repository: https://github.com/midnightlolz31337/ELITE-Protocol
-    status: existing-project
+    status: bootstrap
     role: evidence-and-provenance-contracts
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Draft PR #1 adds conformance validation; its license state remains unresolved."
   - id: elite-ingestion-core
     name: ELITE Ingestion Core
     repository: https://github.com/midnightlolz31337/ELITE-Ingestion-Core
-    status: existing-project
+    status: experimental
     role: bounded-ingestion-and-quarantine
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Prototype implementation exists; PR #2 remains open and licensing requires owner decision."
   - id: elite-agent-commons
     name: ELITE Agent Commons
     repository: https://github.com/midnightlolz31337/ELITE-Agent-Commons
-    status: existing-project
+    status: bootstrap
     role: agent-and-tool-discovery
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Catalogue and CLI are early-stage; draft PR #1 improves package installability."
   - id: huffman-network-atlas
     name: Huffman Network Atlas
     repository: https://github.com/midnightlolz31337/Huffman-Network-Atlas
-    status: existing-project
+    status: bootstrap
     role: cross-account-ecosystem-discovery
+    visibility: public
+    verification:
+      level: repository-exists
+      checked_at: "2026-11-22"
+    notes: "Separate scope from LoLz Mesh Atlas: federated discovery across related independent namespaces."

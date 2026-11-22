@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LoLz Mesh Atlas Catalogue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated", "projects"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "updated": {"type": "string", "format": "date"},
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "repository", "status", "role", "visibility", "verification"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"},
+          "name": {"type": "string", "minLength": 1},
+          "repository": {"type": "string", "format": "uri"},
+          "status": {"enum": ["planned", "bootstrap", "experimental", "active", "maintenance", "archived", "unverified"]},
+          "role": {"type": "string", "minLength": 1},
+          "visibility": {"type": "string", "const": "public"},
+          "verification": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["level", "checked_at"],
+            "properties": {
+              "level": {"enum": ["repository-exists", "source-reviewed", "ci-verified", "independently-reproduced"]},
+              "checked_at": {"type": "string", "format": "date"},
+              "evidence": {"type": "array", "items": {"type": "string", "format": "uri"}}
+            }
+          },
+          "description": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}
