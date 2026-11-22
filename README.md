@@ -15,10 +15,11 @@ Private projects and private Think Tank records must never be placed in this pub
 ```bash
 python -m pip install -r requirements.txt
 python -m atlas_catalogue.validator
+python -m atlas_catalogue.validator --export-json build/catalogue.json
 python -m unittest discover -s tests -v
 ```
 
-Validation is offline. It checks the catalogue against the JSON Schema, rejects duplicate YAML mapping keys, duplicate project IDs, duplicate repository URLs, non-HTTPS URLs, and private visibility records. It does not fetch repository URLs or independently verify their current status.
+Validation is offline. It checks the catalogue against the JSON Schema, rejects duplicate YAML mapping keys, duplicate project IDs, duplicate repository URLs, non-HTTPS URLs, and private visibility records. It does not fetch repository URLs or independently verify their current status. The optional JSON export sorts object keys, writes UTF-8 with stable formatting, and replaces the destination atomically after validation.
 
 ## Design principles
 
