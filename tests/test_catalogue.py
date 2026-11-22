@@ -1,8 +1,13 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from atlas_catalogue.validator import load_catalogue, validate_catalogue
+from atlas_catalogue.validator import (
+    export_catalogue_json,
+    load_catalogue,
+    validate_catalogue,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOGUE = ROOT / "catalogue" / "projects.yaml"
@@ -35,6 +40,10 @@ class CatalogueValidationTests(unittest.TestCase):
         self.document["projects"][0]["repository"] = "http://example.org/project"
         self.assertTrue(validate_catalogue(self.document))
 
+    def test_backslash_repository_url_fails(self):
+        self.document["projects"][0]["repository"] = "https://example.org\\@attacker.invalid/project"
+        self.assertTrue(validate_catalogue(self.document))
+
     def test_unknown_fields_fail_closed(self):
         self.document["unexpected"] = "not allowed"
         self.assertTrue(validate_catalogue(self.document))
@@ -45,6 +54,16 @@ class CatalogueValidationTests(unittest.TestCase):
             path.write_text("schema_version: '1.0'\nschema_version: '1.0'\n", encoding="utf-8")
             with self.assertRaises(Exception):
                 load_catalogue(path)
+
+    def test_json_export_is_deterministic_and_round_trips(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output = Path(temp_dir) / "catalogue.json"
+            export_catalogue_json(self.document, output)
+            first = output.read_bytes()
+            export_catalogue_json(self.document, output)
+            second = output.read_bytes()
+            self.assertEqual(first, second)
+            self.assertEqual(json.loads(first), self.document)
 
 
 if __name__ == "__main__":
