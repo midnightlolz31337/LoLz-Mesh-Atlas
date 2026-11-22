@@ -1,1 +1,3 @@
-"""LoLz Mesh Atlas catalogue validation."""\n\n__version__ = "0.1.0"\n
+"""LoLz Mesh Atlas catalogue validation."""
+
+__version__ = "0.1.0"
